@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "SmartRestaurant",
+    "slug": "SmartRestaurant",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your frined.",
+          "cameraPermission": "Allow $(PRODUCT_NAME) to open the camera",
+          "//": "Disables the microphone permission",
+          "microphonePermission": false
+        }
+      ]
+    ],
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    },
+    "android": {
+      "package": "com.digitaltech.smartrestaurant",
+      "versionCode": 1
+    },
+    "ios": {
+      "bundleIdentifier": "com.digitaltech.smartrestaurant",
+      "buildNumber": "1",
+      "supportsTablet": true
+    }
+  }
+}
