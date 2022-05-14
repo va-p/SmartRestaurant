@@ -27,10 +27,13 @@ import { InputCategory } from '@components/Form/InputCategory';
 import { InputPrice } from '@components/Form/InputPrice';
 import { ProductImage } from '@components/ProductImage';
 import { InputForm } from '@components/Form/InputForm';
+import { Header } from '@components/Header';
 import { Button } from '@components/Button';
 
+import { selectProductId } from '@slices/productSlice';
+
 import api from '@api/api';
-import { Header } from '@components/Header';
+import { useSelector } from 'react-redux';
 
 type FormData = {
   name: string;
@@ -57,15 +60,14 @@ const schema = Yup.object().shape({
 
 export function RegisterProduct() {
   const { control, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
-  const [productImage, setProductImage] = useState('');
+  const [productImageUrl, setProductImageUrl] = useState('');
+  const [productImageBase64, setProductImageBase64] = useState<string>();
   const [categories, setCategories] = useState([]);
   const [productCategory, setProductCategory] = useState('');
   const [product, setProduct] = useState();
   const [loading, setLoading] = useState(false);
   const [buttonIsLoading, setButtonIsLoading] = useState(false);
-
-  const route = useRoute();
-  const { id } = route.params as ProductNavigationProps;
+  const productId = useSelector(selectProductId);
 
   async function fetchProductCategories() {
     setLoading(true);
@@ -86,11 +88,13 @@ export function RegisterProduct() {
     if (status === 'granted') {
       const response = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        aspect: [4, 4]
+        aspect: [4, 4],
+        base64: true
       });
 
       if (!response.cancelled) {
-        setProductImage(response.uri);
+        setProductImageUrl(response.uri);
+        setProductImageBase64(response.base64);
       }
     } else {
       Alert.alert('Permissão de acesso à biblioteca de mídia negada.')
@@ -101,9 +105,10 @@ export function RegisterProduct() {
     setButtonIsLoading(true);
     try {
       const newProductImage = {
-        image: productImage
+        //Interpolando o prefixo de uma imagem jpeg codificada em base64 com o código base64 da imagem selecionada
+        content: `data:image/jpeg;base64,${productImageBase64}`
       }
-      const productImageDataResponse = await api.post('product_image', newProductImage);
+      const productImageDataResponse = await api.post('upload/product_image', newProductImage);
       if (productImageDataResponse.status === 200) {
       } else {
         Alert.alert('Erro ao fazer upload da imagem do produto. Tente novamente em alguns instantes.')
@@ -133,7 +138,7 @@ export function RegisterProduct() {
     try {
       const { data } = await api.get('product', {
         params: {
-          product_id: id
+          product_id: productId
         }
       });
       if (!data) {
@@ -146,11 +151,18 @@ export function RegisterProduct() {
     }
   };
 
-  useEffect(() => {
+  {
+    if (productId) {
+      useEffect(() => {
+        fetchProduct();
+      })
+    }
+  }
+  /*useEffect(() => {
     if (id) {
       fetchProduct();
     }
-  }, [id]);
+  }, []);*/
 
   return (
     <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -159,7 +171,7 @@ export function RegisterProduct() {
         <Header type='primary' title='Cadastrar produto' />
 
         <Upload>
-          <ProductImage uri={productImage} />
+          <ProductImage uri={productImageUrl} />
 
           <PickImageButton
             title='Carregar'

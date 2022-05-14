@@ -10,7 +10,7 @@ export declare global {
   namespace ReactNavigation {
     interface RootParamList {
       home: undefined;
-      'Cadastrar Produto': ProductNavigationProps;
+      'Cadastrar Produto': undefined;
       order: OrderNavigationProps;
       orders: undefined;
     }

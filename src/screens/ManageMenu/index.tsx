@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, FlatList } from 'react-native';
 import {
-  Container,
-  MenuHeader,
-  MenuItemsNumber
+  Container
 } from './styles';
 
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 import { ProductCard, ProductProps } from '@components/ProductCard';
 import { Header } from '@components/Header';
@@ -14,11 +13,13 @@ import { Search } from '@components/Search';
 import { Load } from '@components/Load';
 
 import api from '@api/api';
+import { setProductId } from '@slices/productSlice';
 
 export function ManageMenu() {
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
@@ -49,10 +50,6 @@ export function ManageMenu() {
     fetchProducts('');
   };
 
-  function handleProductSelect(id: string) {
-    navigation.navigate('Cadastrar Produto', { id });
-  };
-
   useEffect(() => {
     fetchProducts('');
   }, []);
@@ -77,11 +74,17 @@ export function ManageMenu() {
 
       <FlatList
         data={products}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
           <ProductCard
             data={(item)}
-            onPress={() => handleProductSelect(item.id)}
+            onPress={() => {
+              dispatch(
+                setProductId(item.id)
+              );
+
+              navigation.navigate('Cadastrar Produto')
+            }}
           />
         )}
         showsVerticalScrollIndicator={false}

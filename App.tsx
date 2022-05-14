@@ -6,9 +6,11 @@ import { DMSans_400Regular } from '@expo-google-fonts/dm-sans';
 import { ThemeProvider } from 'styled-components/native';
 import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
+import { Provider } from 'react-redux';
 
 import { AuthProvider } from '@contexts/auth';
 import { Routes } from './src/routes';
+import { store } from './src/store';
 
 import themes from '@themes/index';
 
@@ -23,13 +25,16 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider theme={themes}>
-        <StatusBar style='light' translucent backgroundColor='transparent' />
-        <AuthProvider>
-          <Routes />
-        </AuthProvider>
-      </ThemeProvider>
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ThemeProvider theme={themes}>
+          <StatusBar style='light' translucent backgroundColor='transparent' />
+          <AuthProvider>
+            <Routes />
+          </AuthProvider>
+        </ThemeProvider>
+      </GestureHandlerRootView>
+    </Provider>
+
   );
 }

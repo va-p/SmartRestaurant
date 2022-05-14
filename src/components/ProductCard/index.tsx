@@ -16,23 +16,28 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components/native';
 
 export type ProductProps = {
-  id: string;
-  photoUrl: string;
+  id: number;
   name: string;
   description: string;
-}
+  category: string;
+  product_image: {
+    image: {
+      url: string | undefined;
+    };
+  };
+};
 
 type Props = RectButtonProps & {
   data: ProductProps;
-}
+};
 
 export function ProductCard({ data, ...rest }: Props) {
   const { COLORS } = useTheme();
-
+  
   return (
     <Container>
       <Content {...rest}>
-        <Image source={{ uri: data.photoUrl }} />
+        <Image source={{ uri: data.product_image?.image?.url }} />
 
         <Details>
           <Identification>
