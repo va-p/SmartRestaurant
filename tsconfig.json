@@ -4,14 +4,20 @@
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@themes/*": [
-        "./src/global/themes/*"
-      ],
       "@components/*": [
         "./src/components/*"
       ],
+      "@themes/*": [
+        "./src/global/themes/*"
+      ],
       "@contexts/*": [
         "./src/contexts/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@configs/*": [
+        "./src/configs/*"
       ],
       "@screens/*": [
         "./src/screens/*"
@@ -24,6 +30,9 @@
       ],
       "@slices/*": [
         "./src/slices/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
       ],
       "@hooks/*": [
         "./src/hooks/*"

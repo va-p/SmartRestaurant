@@ -28,22 +28,21 @@ export const Content = styled.ScrollView.attrs({
   padding-left: 32px;
 `;
 
-export const Title = styled.Text`
-  font-size: ${RFValue(32)}px;
-
-  align-self: flex-start;
-  ${({ theme }) => css`
-    font-family: ${theme.FONTS.TITLE};
-    color: ${theme.COLORS.TITLE};
-  `}
-`;
-
 export const Brand = styled.Image.attrs({
   resizeMode: 'contain'
 })`
   height: 340px;
   margin-top: 64px;
   margin-bottom: 32px;
+`;
+
+export const Title = styled.Text`
+  font-size: ${RFValue(32)}px;
+  align-self: flex-start;
+  ${({ theme }) => css`
+    font-family: ${theme.FONTS.TITLE};
+    color: ${theme.COLORS.TITLE};
+  `}
 `;
 
 export const ForgotPasswordButton = styled.TouchableOpacity`

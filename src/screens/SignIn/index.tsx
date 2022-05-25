@@ -10,6 +10,8 @@ import {
   ForgotPasswordLabel
 } from './styles';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
@@ -18,7 +20,12 @@ import { InputForm } from '@components/Form/InputForm';
 import { Button } from '@components/Button';
 
 import { BrandImg } from '@assets/brand.png';
-import { useAuth } from '@contexts/auth';
+
+import {
+  COLLECTION_USERS
+} from '@configs/database';
+
+import { signInWithXano } from '@services/auth';
 
 interface FormData {
   email: string;
@@ -32,26 +39,34 @@ const schema = Yup.object().shape({
 });
 /* Validation Form - End */
 
-export function SignIn({ navigation }: any) {
+export function SignIn() {
   const { control, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
-  const { signInWithXano, user } = useAuth();
+  const navigation = useNavigation();
 
   async function handleSignInWithXano(form: FormData) {
     const SignInUser = {
       email: form.email,
       password: form.password
     }
-
     try {
-      await signInWithXano(SignInUser)
-      if (user.isAdmin) {
-        navigation.navigate('Home Admin')
-      } else {
-        navigation.navigate('Home')
+      await signInWithXano(SignInUser);
+      const jsonUserData = await AsyncStorage.getItem(COLLECTION_USERS);
+      if (jsonUserData) {
+        const loggedInUserData = JSON.parse(jsonUserData);
+        switch (loggedInUserData.type) {
+          case 'admin':
+            navigation.navigate('Home Waiter')
+            break;
+          case ('waiter'):
+            navigation.navigate('Home Waiter')
+          default: 'waiter';
+            break;
+        }
       }
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Credenciais inválidas.');
+    } catch (error: any) {
+      console.error(error);
+      //throw new Error(error.message);
+      Alert.alert(`Erro: ${error}`);
     }
   };
 
@@ -90,6 +105,7 @@ export function SignIn({ navigation }: any) {
           <Button
             type='primary'
             title='Entrar'
+            onPress={handleSubmit(handleSignInWithXano)}
           />
         </Content>
       </Backgroud>
