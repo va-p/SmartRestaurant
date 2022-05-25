@@ -8,6 +8,8 @@ import { CustomDrawer } from '@components/CustomDrawer';
 import { RegisterProduct } from '@screens/RegisterProduct';
 import { RegisterDesk } from '@screens/RegisterDesk';
 import { ManageMenu } from '@screens/ManageMenu';
+import { NewOrder } from '@screens/NewOrder';
+import { Orders } from '@screens/Orders';
 
 import theme from '@themes/index';
 
@@ -25,6 +27,19 @@ export function AdminDrawerRoutes() {
         drawerActiveTintColor: theme.COLORS.SECONDARY_900
       }}
     >
+      <Drawer.Screen
+        name='Pedidos'
+        component={Orders}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons
+              name='book-outline'
+              size={20}
+              color={color}
+            />
+          )
+        }}
+      />
       <Drawer.Screen
         name='Cardápio'
         component={ManageMenu}

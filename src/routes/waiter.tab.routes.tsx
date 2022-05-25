@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+
+import { CustomBottomTabNavigator } from '@components/CustomBottomTabNavigator';
 
 import { Orders } from '@screens/Orders';
 import { Home } from '@screens/Home';
@@ -16,8 +17,8 @@ export function WaiterTabRoutes() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-
-        tabBarActiveTintColor: themes.COLORS.SECONDARY_900
+        tabBarActiveTintColor: themes.COLORS.SECONDARY_900,
+        tabBarInactiveTintColor: themes.COLORS.SECONDARY_400
       }}
     >
       <Tab.Screen
@@ -25,9 +26,9 @@ export function WaiterTabRoutes() {
         component={Home}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons
-              name='home-outline'
-              size={20}
+            <CustomBottomTabNavigator
+              iconName='home-outline'
+              title='Mesas'
               color={color}
             />
           )
@@ -39,9 +40,9 @@ export function WaiterTabRoutes() {
         component={Menu}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons
-              name='book-outline'
-              size={20}
+            <CustomBottomTabNavigator
+              iconName='book-outline'
+              title='Cardápio'
               color={color}
             />
           )
@@ -53,10 +54,11 @@ export function WaiterTabRoutes() {
         component={Orders}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons
-              name='list-outline'
-              size={20}
+            <CustomBottomTabNavigator
+              iconName='list-outline'
+              title='Pedidos'
               color={color}
+              notifications="0"
             />
           )
         }}

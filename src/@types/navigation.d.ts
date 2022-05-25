@@ -9,10 +9,12 @@ export type OrderNavigationProps = {
 export declare global {
   namespace ReactNavigation {
     interface RootParamList {
-      home: undefined;
+      Cardápio: undefined;
       'Cadastrar Produto': undefined;
       order: OrderNavigationProps;
       orders: undefined;
+      'Home Admin': undefined;
+      'Home Waiter': undefined;
     }
   }
 }

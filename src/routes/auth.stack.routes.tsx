@@ -2,9 +2,9 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { RegisterProduct } from '@screens/RegisterProduct';
+import { AdminDrawerRoutes } from './admin.drawer.routes';
+import { WaiterTabRoutes } from './waiter.tab.routes';
 import { SignIn } from '@screens/SignIn';
-import { Home } from '@screens/Home';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,18 +16,18 @@ export function AuthStackRoutes() {
       }}
     >
       <Stack.Screen
-        name="Home"
-        component={Home}
-      />
-
-      <Stack.Screen
-        name="Product"
-        component={RegisterProduct}
-      />
-
-      <Stack.Screen
-        name="SignIn"
+        name='SignIn'
         component={SignIn}
+      />
+
+      <Stack.Screen
+        name='Home Admin'
+        component={AdminDrawerRoutes}
+      />
+
+      <Stack.Screen
+        name='Home Waiter'
+        component={WaiterTabRoutes}
       />
     </Stack.Navigator>
   );
