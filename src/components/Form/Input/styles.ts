@@ -18,7 +18,7 @@ export const Label = styled.Text`
 `;
 
 export const Container = styled(TextInput).attrs<Props>(({ theme, type }) => ({
-  placeholderTextColor: type === 'primary' ? theme.COLORS.SECONDARY_900 : theme.COLORS.SECONDARY_900
+  placeholderTextColor: type === 'primary' ? theme.COLORS.TITLE : theme.COLORS.SECONDARY_900
 })) <Props>`
   width: 100%;
   height: 56px;
@@ -30,6 +30,6 @@ export const Container = styled(TextInput).attrs<Props>(({ theme, type }) => ({
   ${({ theme, type }) => css`
     font-family: ${theme.FONTS.TEXT};
     border: 1px solid ${theme.COLORS.SHAPE};
-    color: ${type === 'primary' ? theme.COLORS.SECONDARY_900 : theme.COLORS.SECONDARY_900};
+    color: ${type === 'primary' ? theme.COLORS.TITLE : theme.COLORS.SECONDARY_900};
   `};
 `;

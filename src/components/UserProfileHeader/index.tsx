@@ -6,12 +6,14 @@ import {
   UserName
 } from './styles';
 
+import { useSelector } from 'react-redux';
+
 import { Avatar } from '../Avatar';
 
-import { useAuth } from '../../contexts/auth';
+import { selectUserName } from '@slices/userSlice';
 
 export function UserProfileHeader() {
-  const userData = useAuth();
+  const userName = useSelector(selectUserName);
 
   return (
     <Container>
@@ -23,7 +25,7 @@ export function UserProfileHeader() {
         </Greeting>
 
         <UserName>
-          {userData.user.name}
+          {userName}
         </UserName>
       </GreetingContainer>
     </Container>

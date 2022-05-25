@@ -22,6 +22,7 @@ import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
 import { ProductNavigationProps } from 'src/@types/navigation';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { InputCategory } from '@components/Form/InputCategory';
 import { InputPrice } from '@components/Form/InputPrice';
@@ -29,11 +30,11 @@ import { ProductImage } from '@components/ProductImage';
 import { InputForm } from '@components/Form/InputForm';
 import { Header } from '@components/Header';
 import { Button } from '@components/Button';
+import { Load } from '@components/Load';
 
 import { selectProductId } from '@slices/productSlice';
 
 import api from '@api/api';
-import { useSelector } from 'react-redux';
 
 type FormData = {
   name: string;
@@ -68,6 +69,9 @@ export function RegisterProduct() {
   const [loading, setLoading] = useState(false);
   const [buttonIsLoading, setButtonIsLoading] = useState(false);
   const productId = useSelector(selectProductId);
+  const navigation = useNavigation();
+
+  console.log(productId);
 
   async function fetchProductCategories() {
     setLoading(true);
@@ -122,7 +126,7 @@ export function RegisterProduct() {
       }
       const productDataResponse = await api.post('product', newProduct);
       if (productDataResponse.status === 200) {
-        Alert.alert('Cadastro de Produto', 'Produto cadastrado com sucesso!', [{ text: 'Cadastrar novo produto' }, { text: 'Voltar para a home' }]);
+        Alert.alert('Cadastro de Produto', 'Produto cadastrado com sucesso!', [{ text: 'Cadastrar novo produto' }, { text: 'Voltar para a home', onPress: () => navigation.navigate('Cardápio') }]);
       };
       setButtonIsLoading(false);
     } catch (error: any) {
@@ -143,6 +147,7 @@ export function RegisterProduct() {
       });
       if (!data) {
       } else {
+        console.log(data);
         setProduct(data);
         setLoading(false);
       }
@@ -151,18 +156,15 @@ export function RegisterProduct() {
     }
   };
 
-  {
+  useEffect(() => {
     if (productId) {
-      useEffect(() => {
-        fetchProduct();
-      })
-    }
-  }
-  /*useEffect(() => {
-    if (id) {
       fetchProduct();
     }
-  }, []);*/
+  }, [productId]);
+
+  if (loading) {
+    return <Load />
+  };
 
   return (
     <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

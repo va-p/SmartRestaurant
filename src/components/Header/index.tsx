@@ -10,13 +10,13 @@ import {
 
 
 type Props = {
-  title: string;
+  title?: string;
   type: TypeProps;
 }
 
 export function Header({ title, type }: Props) {
   return (
-    <Container>
+    <Container type={type}>
       {
         type === 'primary' ?
           <BackButton>

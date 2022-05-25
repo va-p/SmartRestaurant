@@ -11,7 +11,7 @@ type Props = TextInputProps & {
   label?: string;
 }
 
-export function Input({ type = 'secondary', label, ...rest }: Props) {
+export function Input({ type = 'primary', label, ...rest }: Props) {
   return (
     <>
       <Label>

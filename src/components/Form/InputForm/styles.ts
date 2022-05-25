@@ -8,5 +8,5 @@ export const Container = styled.View`
 
 export const ErrorMessage = styled.Text`
   font-size: ${RFValue(14)}px;
-  color: ${({ theme }) => theme.COLORS.PRIMARY_800}
+  color: ${({ theme }) => theme.COLORS.TITLE}
 `;

@@ -23,6 +23,7 @@ export const Container = styled(LinearGradient).attrs(({ theme }) => ({
 `;
 
 export const BackButton = styled(BorderlessButton)`
+  left: 40px;
 `;
 
 export const IconBackButton = styled(Ionicons)`

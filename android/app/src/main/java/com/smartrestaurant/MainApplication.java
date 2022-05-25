@@ -1,5 +1,7 @@
 package com.smartrestaurant;
 
++ import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -63,6 +65,14 @@ public class MainApplication extends Application implements ReactApplication {
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
+  }
+
+  @Override
+  protected List<ReactPackage> getPackages() {
+    return Arrays.<ReactPackage>asList(
+        new MainReactPackage(),
+  +       new AsyncStoragePackage()
+    );
   }
 
   /**

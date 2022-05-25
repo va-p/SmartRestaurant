@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components/native';
+import { Animated } from 'react-native';
 
 import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { Ionicons } from '@expo/vector-icons';
 
 export const Container = styled.View`
   width: 100%;
@@ -55,3 +57,20 @@ export const Divider = styled.View`
   background-color: ${({ theme }) => theme.COLORS.SHAPE};
 `;
 
+export const DeleteButton = styled(Animated.View)`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-left: 70%;
+  background-color: ${({ theme }) => theme.COLORS.PRIMARY_800};
+`;
+
+export const DeleteButtonIcon = styled(Ionicons)`
+  font-size: ${RFValue(20)}px;
+  color: ${({ theme }) => theme.COLORS.TITLE};
+`;
+
+export const DeleteButtonText = styled.Text`
+  color: ${({ theme }) => theme.COLORS.TITLE};
+`;

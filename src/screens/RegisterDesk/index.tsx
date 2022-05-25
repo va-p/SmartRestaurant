@@ -82,7 +82,7 @@ export function RegisterDesk({ navigation }: any) {
   }
 
   return (
-    <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <Container behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
       <Header type='primary' title='Cadastrar mesa' />
 

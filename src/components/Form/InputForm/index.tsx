@@ -7,16 +7,18 @@ import {
 
 import { Control, Controller } from 'react-hook-form';
 
+import { TypeProps } from '../Input/styles';
 import { Input } from '../Input';
 
 interface Props extends TextInputProps {
+  type?: TypeProps;
   label?: string;
   name: string;
   control: Control;
   error: string;
 }
 
-export function InputForm({ label, name, control, error, ...rest }: Props) {
+export function InputForm({ type, label, name, control, error, ...rest }: Props) {
   return (
     <Container>
       <Controller
@@ -27,6 +29,7 @@ export function InputForm({ label, name, control, error, ...rest }: Props) {
             {error && <ErrorMessage> {error} </ErrorMessage>}
 
             <Input
+              type={type}
               label={label}
               onChangeText={onChange}
               value={value}

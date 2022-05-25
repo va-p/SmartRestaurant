@@ -4,6 +4,7 @@ import { useFonts, DMSerifDisplay_400Regular } from '@expo-google-fonts/dm-serif
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DMSans_400Regular } from '@expo-google-fonts/dm-sans';
 import { ThemeProvider } from 'styled-components/native';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
 import { Provider } from 'react-redux';
