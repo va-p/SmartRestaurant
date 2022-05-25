@@ -8,6 +8,7 @@ interface ProductState {
   productDescription: string | null;
   productCategory: string | null;
   productImage: string | null;
+  productTenantId: string | null;
 };
 
 // Define the initial state using that type
@@ -16,7 +17,8 @@ const initialState: ProductState = {
   productName: null,
   productDescription: null,
   productCategory: null,
-  productImage: null
+  productImage: null,
+  productTenantId: null
 };
 
 export const productSlice = createSlice({
@@ -39,6 +41,9 @@ export const productSlice = createSlice({
     },
     setProductImage: (state, action: PayloadAction<ProductState['productImage']>) => {
       state.productImage = action.payload;
+    },
+    setProductTenantId: (state, action: PayloadAction<ProductState['productTenantId']>) => {
+      state.productTenantId = action.payload;
     }
   },
 });
@@ -49,7 +54,8 @@ export const {
   setProductName,
   setProductDescription,
   setProductCateogy,
-  setProductImage
+  setProductImage,
+  setProductTenantId
 } = productSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -58,5 +64,6 @@ export const selectProductName = (state: RootState) => state.product.productName
 export const selectProductDescription = (state: RootState) => state.product.productDescription;
 export const selectProductCategory = (state: RootState) => state.product.productCategory;
 export const selectProductImage = (state: RootState) => state.product.productImage;
+export const selectProductTenantId = (state: RootState) => state.product.productTenantId;
 
 export default productSlice.reducer;
