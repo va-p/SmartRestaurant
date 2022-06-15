@@ -1,38 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  Platform,
-  ScrollView
-} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Alert, Platform } from 'react-native';
 import {
   Container,
+  ContentScroll,
   Upload,
   PickImageButton,
   Form,
   Label,
-  InputGroup,
   InputGroupHeader,
   MaxCharacters
 } from './styles';
 
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as ImagePicker from 'expo-image-picker';
+import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
-import { ProductNavigationProps } from 'src/@types/navigation';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { InputCategory } from '@components/Form/InputCategory';
+import { ControlledInputProductCategory } from '@components/Form/ControlledInputProductCategory';
+import { ControlledInput } from '@components/Form/ControlledInput';
 import { InputPrice } from '@components/Form/InputPrice';
 import { ProductImage } from '@components/ProductImage';
-import { InputForm } from '@components/Form/InputForm';
 import { Header } from '@components/Header';
 import { Button } from '@components/Button';
 import { Load } from '@components/Load';
 
 import { selectProductId } from '@slices/productSlice';
+import { selectUserTenantId } from '@slices/userSlice';
 
 import api from '@api/api';
 
@@ -49,41 +44,47 @@ type FormData = {
 
 /* Validation Form - Start */
 const schema = Yup.object().shape({
-  name: Yup.string().required('Digite o nome do produto'),
-  description: Yup.string().required('Digite a descrição do produto'),
-  category: Yup.string().required('Selecione a categoria do produto'),
-  priceSizeP: Yup.number().required('Digite o valor do produto').typeError('Digite apenas números'),
-  priceSizeM: Yup.number().required('Digite o valor do produto').typeError('Digite apenas números'),
-  priceSizeG: Yup.number().required('Digite o valor do produto').typeError('Digite apenas números'),
-  priceSizeGG: Yup.number().required('Digite o valor do produto').typeError('Digite apenas números'),
+  name: Yup.string().required("Digite o nome do produto"),
+  description: Yup.string().required("Digite a descrição do produto"),
+  category: Yup.string().required("Selecione a categoria do produto"),
+  priceSizeP: Yup.number().required("Digite o valor do produto").typeError("Digite apenas números"),
+  priceSizeM: Yup.number().required("Digite o valor do produto").typeError("Digite apenas números"),
+  priceSizeG: Yup.number().required("Digite o valor do produto").typeError("Digite apenas números"),
+  priceSizeGG: Yup.number().required("Digite o valor do produto").typeError("Digite apenas números"),
 });
 /* Validation Form - End */
 
 export function RegisterProduct() {
-  const { control, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
   const [productImageUrl, setProductImageUrl] = useState('');
   const [productImageBase64, setProductImageBase64] = useState<string>();
-  const [categories, setCategories] = useState([]);
-  const [productCategory, setProductCategory] = useState('');
-  const [product, setProduct] = useState();
-  const [loading, setLoading] = useState(false);
-  const [buttonIsLoading, setButtonIsLoading] = useState(false);
+  const [productCategories, setProductCategories] = useState([]);
+  const [productCategorySelected, setProductCategorySelected] = useState('');
+  const tenantId = useSelector(selectUserTenantId);
+  const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
+    resolver: yupResolver(schema)
+  });
   const productId = useSelector(selectProductId);
+  const [buttonIsLoading, setButtonIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-
-  console.log(productId);
 
   async function fetchProductCategories() {
     setLoading(true);
     try {
-      const { data } = await api.get('product_category');
+      const { data } = await api.get('product_category', {
+        params: {
+          tenant_id: tenantId
+        }
+      });
       if (!data) {
       } else {
-        setCategories(data);
+        const categories = data.map(category => category.name);
+        setProductCategories(categories);
       }
       setLoading(false);
     } catch (error) {
       console.error(error);
+      Alert.alert("Categorias de Produtos", "Não foi possível buscar as categorias de produtos. Verifique sua conexão com a internet e tente novamente.");
     }
   };
 
@@ -95,44 +96,51 @@ export function RegisterProduct() {
         aspect: [4, 4],
         base64: true
       });
-
       if (!response.cancelled) {
         setProductImageUrl(response.uri);
         setProductImageBase64(response.base64);
       }
     } else {
-      Alert.alert('Permissão de acesso à biblioteca de mídia negada.')
+      Alert.alert("Permissão de acesso à biblioteca de mídia negada.")
     }
   };
 
-  async function handleAddProduct(form: FormData) {
+  async function handleAddProduct(data: FormData) {
     setButtonIsLoading(true);
     try {
       const newProductImage = {
         //Interpolando o prefixo de uma imagem jpeg codificada em base64 com o código base64 da imagem selecionada
-        content: `data:image/jpeg;base64,${productImageBase64}`
+        content: `data:image/jpeg;base64,${productImageBase64}`,
+        tenant_id: tenantId
       }
       const productImageDataResponse = await api.post('upload/product_image', newProductImage);
-      if (productImageDataResponse.status === 200) {
-      } else {
-        Alert.alert('Erro ao fazer upload da imagem do produto. Tente novamente em alguns instantes.')
+      if (productImageDataResponse.status !== 200) {
+        Alert.alert("Upload da imagem do produto", "Não foi possível fazer upload da imagem do produto. Tente novamente em alguns instantes.")
       }
-
+      const productCategoryDataResponse = await api.get('single_product_category', {
+        params: {
+          tenant_id: tenantId,
+          name: productCategorySelected
+        }
+      });
+      if (productCategoryDataResponse.status !== 200) {
+        Alert.alert("Categorias de Produtos", "Não foi possível buscar as categorias de produtos. Verifique sua conexão com a internet e tente novamente.")
+      }
       const newProduct = {
-        name: form.name,
-        description: form.description,
-        category: form.category,
-        product_image_id: productImageDataResponse.data.id
+        name: data.name,
+        description: data.description,
+        product_category_id: productCategoryDataResponse.data.id,
+        product_image_id: productImageDataResponse.data.id,
+        tenant_id: tenantId
       }
       const productDataResponse = await api.post('product', newProduct);
       if (productDataResponse.status === 200) {
-        Alert.alert('Cadastro de Produto', 'Produto cadastrado com sucesso!', [{ text: 'Cadastrar novo produto' }, { text: 'Voltar para a home', onPress: () => navigation.navigate('Cardápio') }]);
+        Alert.alert("Cadastro de Produto", "Produto cadastrado com sucesso!", [{ text: "Cadastrar novo produto" }, { text: "Voltar para a home", onPress: () => navigation.navigate('Cardápio') }]);
       };
       setButtonIsLoading(false);
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      Alert.alert('Cadastro de Produto', 'Não foi possível cadastrar o produto. Por favor, verifique os campos e tente novamente.');
-      //throw new Error(error);
+      Alert.alert("Cadastro de Produto", "Não foi possível cadastrar o produto. Por favor, verifique os campos e tente novamente.");
       setButtonIsLoading(false);
     };
   };
@@ -142,13 +150,12 @@ export function RegisterProduct() {
     try {
       const { data } = await api.get('product', {
         params: {
+          tenant_id: tenantId,
           product_id: productId
         }
       });
       if (!data) {
       } else {
-        console.log(data);
-        setProduct(data);
         setLoading(false);
       }
     } catch (error) {
@@ -156,22 +163,23 @@ export function RegisterProduct() {
     }
   };
 
-  useEffect(() => {
-    if (productId) {
-      fetchProduct();
-    }
-  }, [productId]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchProductCategories();
+      if (productId) {
+        fetchProduct();
+      }
+    }, [productId])
+  );
 
   if (loading) {
     return <Load />
   };
-
   return (
     <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Header type='primary' title='Cadastrar produto' />
 
-        <Header type='primary' title='Cadastrar produto' />
-
+      <ContentScroll>
         <Upload>
           <ProductImage uri={productImageUrl} />
 
@@ -183,70 +191,78 @@ export function RegisterProduct() {
         </Upload>
 
         <Form>
-          <InputGroup>
-            <InputCategory
-              label='Categoria'
-              name='category'
-              control={control}
-              error={errors.category && errors.category.message}
-            />
-          </InputGroup>
+          <ControlledInputProductCategory
+            label='Categoria'
+            data={productCategories}
+            onSelect={(selectedItem) => {
+              setProductCategorySelected(selectedItem);
+            }}
+            buttonTextAfterSelection={(selectedItem) => {
+              return selectedItem
+            }}
+            rowTextForSelection={(item) => {
+              return item
+            }}
+            name='category'
+            control={control}
+            error={errors.category}
+          />
 
-          <InputGroup>
-            <InputForm
-              label='Nome'
-              autoCapitalize='words'
-              autoCorrect={false}
-              name='name'
-              control={control}
-              error={errors.name && errors.name.message}
-            />
-          </InputGroup>
+          <ControlledInput
+            type='secondary'
+            label='Nome'
+            autoCapitalize='words'
+            autoCorrect={false}
+            name='name'
+            control={control}
+            error={errors.name}
+          />
 
-          <InputGroup>
-            <InputGroupHeader>
-              <Label>Descrição</Label>
-              <MaxCharacters>0 de 60 caracteres</MaxCharacters>
-            </InputGroupHeader>
-            <InputForm
-              autoCapitalize='sentences'
-              autoCorrect={true}
-              multiline
-              maxLength={60}
-              name='description'
-              control={control}
-              error={errors.description && errors.description.message}
-              style={{ height: 80 }}
-            />
-          </InputGroup>
+          <InputGroupHeader>
+            <Label>Descrição</Label>
+            <MaxCharacters>0 de 60 caracteres</MaxCharacters>
+          </InputGroupHeader>
+          <ControlledInput
+            type='secondary'
+            autoCapitalize='sentences'
+            autoCorrect={true}
+            multiline
+            maxLength={60}
+            name='description'
+            control={control}
+            error={errors.description}
+            style={{ height: 80 }}
+          />
 
-          <InputGroup>
-            <Label>Tamanhos e valores</Label>
-            <InputPrice
-              size='P'
-              name='priceSizeP'
-              control={control}
-              error={errors.priceSizeP && errors.priceSizeP.message}
-            />
-            <InputPrice
-              size='M'
-              name='priceSizeM'
-              control={control}
-              error={errors.priceSizeM && errors.priceSizeM.message}
-            />
-            <InputPrice
-              size='G'
-              name='priceSizeG'
-              control={control}
-              error={errors.priceSizeG && errors.priceSizeG.message}
-            />
-            <InputPrice
-              size='GG'
-              name='priceSizeGG'
-              control={control}
-              error={errors.priceSizeGG && errors.priceSizeGG.message}
-            />
-          </InputGroup>
+          <Label>Tamanhos e valores</Label>
+          <InputPrice
+            size='P'
+            keyboardType='numeric'
+            name='priceSizeP'
+            control={control}
+            error={errors.priceSizeP}
+          />
+          <InputPrice
+            size='M'
+            keyboardType='numeric'
+            name='priceSizeM'
+            control={control}
+            error={errors.priceSizeM}
+          />
+          <InputPrice
+            size='G'
+            keyboardType='numeric'
+            name='priceSizeG'
+            control={control}
+            error={errors.priceSizeG}
+          />
+          <InputPrice
+            size='GG'
+            keyboardType='numeric'
+            name='priceSizeGG'
+            control={control}
+            error={errors.priceSizeGG}
+          />
 
           <Button
             title='Cadastrar produto'
@@ -254,7 +270,7 @@ export function RegisterProduct() {
             onPress={handleSubmit(handleAddProduct)}
           />
         </Form>
-      </ScrollView>
+      </ContentScroll>
     </Container>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { RectButtonProps } from 'react-native-gesture-handler';
+import { TouchableOpacityProps } from 'react-native';
 import {
   Container,
   Title,
@@ -8,13 +8,13 @@ import {
   RadioButtonProps
 } from './styles';
 
-type Props = RectButtonProps & RadioButtonProps & {
+type Props = TouchableOpacityProps & RadioButtonProps & {
   title: string;
-};
+}
 
 export function RadioButton({ title, selected = false, ...rest }: Props) {
   return (
-    <Container selected={selected} {...rest}>
+    <Container selected={selected} activeOpacity={0.4} {...rest}>
       <Radio>{selected && <Selected />}</Radio>
 
       <Title>{title}</Title>

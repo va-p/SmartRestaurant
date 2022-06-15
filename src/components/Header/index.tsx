@@ -4,30 +4,35 @@ import {
   BackButton,
   IconBackButton,
   Title,
-  Icon,
   TypeProps
 } from './styles';
 
+import { BorderlessButtonProps } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
-type Props = {
-  title?: string;
+type Props = BorderlessButtonProps & {
   type: TypeProps;
+  title?: string;
 }
 
-export function Header({ title, type }: Props) {
+export function Header({ type, title, ...rest }: Props) {
+  const navigation = useNavigation();
+
+  function handleGoBack() {
+    navigation.goBack();
+  };
+
   return (
     <Container type={type}>
       {
         type === 'primary' ?
-          <BackButton>
+          <BackButton onPress={handleGoBack} {...rest}>
             <IconBackButton name='chevron-back-outline' />
           </BackButton> :
           <></>
       }
 
       <Title>{title}</Title>
-
-      <Icon />
     </Container>
   );
 }

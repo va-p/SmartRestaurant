@@ -1,27 +1,21 @@
 import React from 'react';
 import { TextInputProps } from 'react-native';
 import {
-  Container,
   Label,
+  Container,
   TypeProps
 } from './styles';
 
-type Props = TextInputProps & {
-  type?: TypeProps;
+export type InputProps = TextInputProps & {
+  type: TypeProps;
   label?: string;
 }
 
-export function Input({ type = 'primary', label, ...rest }: Props) {
+export function Input({ type = 'primary', label, ...rest }: InputProps) {
   return (
     <>
-      <Label>
-        {label}
-      </Label>
-      <Container
-        type={type}
-        {...rest}
-      >
-      </Container>
+      <Label type={type}>{label}</Label>
+      <Container type={type} {...rest} />
     </>
   );
 }

@@ -19,7 +19,6 @@ type Props = TextInputProps & {
 
 export function Search({ onSearch, onClear, ...rest }: Props) {
   const { COLORS } = useTheme();
-
   return (
     <Container>
       <InputArea>

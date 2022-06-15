@@ -16,13 +16,15 @@ import {
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButtonProps } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 import { Ionicons } from '@expo/vector-icons';
 
 import { useTheme } from 'styled-components/native';
 
+import { selectUserRole } from '@slices/userSlice';
+
 export type ProductProps = {
-  id: number;
   name: string;
   description: string;
   category: string;
@@ -31,17 +33,21 @@ export type ProductProps = {
       url: string | undefined;
     };
   };
-};
+}
 
 type Props = RectButtonProps & {
   data: ProductProps;
-  onSwipeLeft: () => void;
-};
+  onSwipeableLeftOpen: () => void;
+}
 
-export function ProductCard({ data, onSwipeLeft, ...rest }: Props) {
+export function ProductListItem({ data, onSwipeableLeftOpen, ...rest }: Props) {
   const { COLORS } = useTheme();
+  const userRole = useSelector(selectUserRole);
 
-  function handleSwipeLeft(progressAnimatedValue: Animated.AnimatedInterpolation, dragAnimatedValue: Animated.AnimatedInterpolation) {
+  function handleProductSwipeLeft(
+    progressAnimatedValue: Animated.AnimatedInterpolation,
+    dragAnimatedValue: Animated.AnimatedInterpolation
+  ) {
     const delay = progressAnimatedValue.interpolate({
       inputRange: [0, 1],
       outputRange: [0, 1]
@@ -51,19 +57,20 @@ export function ProductCard({ data, onSwipeLeft, ...rest }: Props) {
       outputRange: [1, 0],
       extrapolate: 'clamp',
     });
-    return (
-      <DeleteButton style={{ opacity }}>
-        <DeleteButtonText>Excluir</DeleteButtonText>
-        <DeleteButtonIcon name='trash-outline' />
-      </DeleteButton>
-    )
+    if (userRole === 'admin') {
+      return (
+        <DeleteButton style={{ opacity }}>
+          <DeleteButtonText>Excluir</DeleteButtonText>
+          <DeleteButtonIcon name='trash-outline' />
+        </DeleteButton>
+      )
+    }
   };
-
   return (
     <Container>
       <Swipeable
-        renderRightActions={handleSwipeLeft}
-        onSwipeableRightOpen={onSwipeLeft}
+        renderRightActions={handleProductSwipeLeft}
+        onSwipeableOpen={onSwipeableLeftOpen}
       >
         <Content {...rest}>
           <Image source={{ uri: data.product_image?.image?.url }} />

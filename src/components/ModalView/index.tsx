@@ -14,10 +14,16 @@ export type Props = ModalProps & {
   children: ReactNode;
   closeModal: () => void;
   title: string;
+  selectedIdentification?: number;
 }
 
-export function ModalView({ children, closeModal, title, ...rest }: Props) {
-
+export function ModalView({
+  children,
+  closeModal,
+  title,
+  selectedIdentification,
+  ...rest
+}: Props) {
   return (
     <Modal
       transparent
@@ -32,7 +38,7 @@ export function ModalView({ children, closeModal, title, ...rest }: Props) {
               <Icon name='close' />
             </BorderlessButton>
             <Title>
-              {title}
+              {title} {selectedIdentification}
             </Title>
           </Header>
 

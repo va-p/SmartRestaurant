@@ -1,5 +1,6 @@
-import { RFValue } from 'react-native-responsive-fontsize';
 import styled, { css } from 'styled-components/native';
+
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.KeyboardAvoidingView`
   flex: 1;
@@ -20,15 +21,7 @@ export const ProductImage = styled.Image`
   border-radius: 120px;
 `;
 
-export const Sizes = styled.View`
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  margin-bottom: 40px;
-`;
-
 export const Form = styled.View`
-  width: 100%;
   padding: 24px;
   margin-top: -120px;
 `;
@@ -52,8 +45,14 @@ export const Label = styled.Text`
   `};
 `;
 
-export const FormRow = styled.View`
+export const Sizes = styled.View`
+  flex-direction: row;
   width: 100%;
+  justify-content: space-between;
+  margin-bottom: 40px;
+`;
+
+export const FormRow = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `;

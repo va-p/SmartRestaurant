@@ -1,25 +1,20 @@
 import { Alert } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
 
 import {
   COLLECTION_TOKENS,
   COLLECTION_USERS
 } from '@configs/database';
 
-import {
-  setUserId,
-  setUserName,
-  setUserLastName,
-  setUserEmail,
-  setUserPhone,
-  setUserType,
-  setUserProfileImage,
-  setUserTenantId,
-} from '@slices/userSlice';
-
 import api from '@api/api';
+
+export const loadStoredUserData = async () => {
+  const jsonUserData = await AsyncStorage.getItem(COLLECTION_USERS);
+  if (jsonUserData) {
+    const loggedInUserData = JSON.parse(jsonUserData);
+  };
+};
 
 export const signInWithXano = async (SignInUser: any) => {
   const loginForm = {
@@ -37,37 +32,7 @@ export const signInWithXano = async (SignInUser: any) => {
       }
     }
     const userData = await api.get('auth/me');
-    await AsyncStorage.setItem(COLLECTION_USERS, JSON.stringify(userData.data));
-    const jsonUserData = await AsyncStorage.getItem(COLLECTION_USERS);
-    if (jsonUserData) {
-      const loggedInUserData = JSON.parse(jsonUserData);
-      /*function DispatchUser() {
-        const dispatch = useDispatch();
-        dispatch(
-          setUserId(loggedInUserData.id)
-        );
-        dispatch(
-          setUserName(loggedInUserData.name)
-        );
-        console.log(loggedInUserData.name);
-        dispatch(
-          setUserLastName(loggedInUserData.last_name)
-        );
-        dispatch(
-          setUserEmail(loggedInUserData.email)
-        );
-        dispatch(
-          setUserPhone(loggedInUserData.phone)
-        );
-        dispatch(
-          setUserType(loggedInUserData.type)
-        );
-        dispatch(
-          setUserTenantId(loggedInUserData.tenant_id)
-        )
-      }*/
-      //return DispatchUser();
-    }
+    await AsyncStorage.setItem(COLLECTION_USERS, JSON.stringify(userData.data));    
   } catch (error: any) {
     console.error(error);
     Alert.alert(`Erro: ${error}`);

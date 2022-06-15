@@ -10,8 +10,8 @@ export const Overlay = styled.View`
 
 export const Header = styled.View`
   width: 100%;
-  height: 50px;
-  margin-top: 80px;
+  height: 40px;
+  margin-top: 60px;
   flex-direction: row;
   align-items: center;
   justify-content: center;

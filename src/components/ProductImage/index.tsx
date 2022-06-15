@@ -13,7 +13,6 @@ export function ProductImage({ uri }: Props) {
   if (uri) {
     return <Image source={{ uri }} />
   };
-
   return (
     <Placeholder>
       <PlaceholderTitle>Nenhuma foto{'\n'}carregada</PlaceholderTitle>

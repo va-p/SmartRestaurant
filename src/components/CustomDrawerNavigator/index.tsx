@@ -5,10 +5,9 @@ import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawe
 
 import { UserProfileHeader } from '../UserProfileHeader';
 
-export function CustomDrawer(props) {
+export function CustomDrawerNavigator(props: any) {
   return (
     <Container>
-
       <UserProfileHeader />
 
       <DrawerContentScrollView {...props}>

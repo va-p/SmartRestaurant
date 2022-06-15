@@ -14,9 +14,11 @@ export const ErrorMessage = styled.Text`
 `;
 
 export const Label = styled.Text`
-  padding-bottom: 5px;
+  font-size: ${RFValue(14)}px;
+  padding-top: 10px;
+  padding-bottom: 8px;
   ${({ theme }) => css`
-    font-family: ${theme.FONTS.TEXT};
+    font-family: ${theme.FONTS.TITLE};
     color: ${theme.COLORS.SECONDARY_900};
   `};
 `;

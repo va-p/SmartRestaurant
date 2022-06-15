@@ -7,21 +7,18 @@ import {
 
 import { RectButtonProps } from 'react-native-gesture-handler';
 
-export interface DeskProps {
+export type DeskProps = {
   number: number;
-  type: TypeProps;
-};
+  status: TypeProps;
+}
 
 type Props = RectButtonProps & {
   data: DeskProps;
 }
 
-export function Desk({ data, ...rest }: Props) {
+export function DeskListItem({ data, ...rest }: Props) {
   return (
-    <Container
-      {...data.type}
-      {...rest}
-    >
+    <Container {...data.status} {...rest}>
       <NumberDesk>
         {data.number}
       </NumberDesk>

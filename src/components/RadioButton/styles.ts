@@ -1,13 +1,19 @@
+import { TouchableOpacity } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
 import { RFValue } from 'react-native-responsive-fontsize';
-import { RectButton } from 'react-native-gesture-handler';
 
 export type RadioButtonProps = {
   selected: boolean;
 }
 
-export const Container = styled(RectButton) <RadioButtonProps>`
+export const ErrorMessage = styled.Text`
+  font-size: ${RFValue(14)}px;
+  padding-left: 5px;
+  color: ${({ theme }) => theme.COLORS.PRIMARY_800};
+`;
+
+export const Container = styled(TouchableOpacity) <RadioButtonProps>`
   width: 104px;
   height: 82px;
   padding: 14px 16px;

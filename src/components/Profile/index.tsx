@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Text
-} from 'react-native';
-
-import { useAuth } from '../../contexts/auth';
+import { View, Text } from 'react-native';
 
 import { Avatar } from '../Avatar';
 
 import { styles } from './styles';
 
 export function Profile() {
-  const userData = useAuth();
-
   return (
     <View style={styles.container}>
 
@@ -25,12 +18,11 @@ export function Profile() {
           </Text>
 
           <Text style={styles.username}>
-            {userData.user.name}
           </Text>
         </View>
 
         <Text style={styles.message}>
-          
+
         </Text>
       </View>
     </View>

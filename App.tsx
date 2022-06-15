@@ -9,7 +9,6 @@ import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
 import { Provider } from 'react-redux';
 
-import { AuthProvider } from '@contexts/auth';
 import { Routes } from './src/routes';
 import { store } from './src/store';
 
@@ -30,9 +29,7 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <ThemeProvider theme={themes}>
           <StatusBar style='light' translucent backgroundColor='transparent' />
-          <AuthProvider>
             <Routes />
-          </AuthProvider>
         </ThemeProvider>
       </GestureHandlerRootView>
     </Provider>

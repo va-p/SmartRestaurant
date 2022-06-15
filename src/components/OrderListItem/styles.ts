@@ -13,7 +13,7 @@ type StatusProps = {
   status: StatusTypesProps;
 }
 
-export const Container = styled(RectButton) <ContainerProps>`
+export const Container = styled.View <ContainerProps>`
   width: 50%;
   align-items: center;
   padding: 24px;
@@ -21,6 +21,9 @@ export const Container = styled(RectButton) <ContainerProps>`
     border-right-width: ${index % 2 > 0 ? 0 : 1}px;
     border-right-color: ${theme.COLORS.SHAPE};
   `};
+`;
+
+export const Content = styled(RectButton)`
 `;
 
 export const Image = styled.Image`

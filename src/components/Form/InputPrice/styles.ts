@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components/native';
 import { TextInput } from 'react-native';
+import styled, { css } from 'styled-components/native';
 
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -17,14 +17,6 @@ export const Container = styled.View`
   margin-bottom: 8px;
   border: 1px solid ${({ theme }) => theme.COLORS.SHAPE};
   border-radius: 12px;
-`;
-
-export const Label = styled.Text`
-  padding-bottom: 5px;
-  ${({ theme }) => css`
-    font-family: ${theme.FONTS.TEXT};
-    color: ${theme.COLORS.SECONDARY_900};
-  `};
 `;
 
 export const Size = styled.View`

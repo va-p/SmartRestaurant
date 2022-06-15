@@ -6,7 +6,7 @@ import { RectButton } from 'react-native-gesture-handler';
 export type TypeProps = 'busy' | 'free';
 
 type ContainerProps = {
-  type: TypeProps;
+  status?: TypeProps;
 }
 
 export const Container = styled(RectButton) <ContainerProps>`
@@ -15,7 +15,7 @@ export const Container = styled(RectButton) <ContainerProps>`
   align-items: center;
   justify-content: center;
   margin: 8px;
-  background-color: ${({ type, theme }) => type === 'busy' ? theme.COLORS.PRIMARY_800 : theme.COLORS.SUCCESS_900};
+  background-color: ${({ status, theme }) => status === 'busy' ? theme.COLORS.PRIMARY_800 : theme.COLORS.SUCCESS_900};
   border-radius: 8px;
 `;
 

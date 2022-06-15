@@ -28,8 +28,8 @@ export function WaiterTabRoutes() {
           tabBarIcon: ({ color }) => (
             <CustomBottomTabNavigator
               iconName='home-outline'
-              title='Mesas'
               color={color}
+              notifications={0}
             />
           )
         }}
@@ -42,8 +42,8 @@ export function WaiterTabRoutes() {
           tabBarIcon: ({ color }) => (
             <CustomBottomTabNavigator
               iconName='book-outline'
-              title='Cardápio'
               color={color}
+              notifications={0}
             />
           )
         }}
@@ -56,9 +56,8 @@ export function WaiterTabRoutes() {
           tabBarIcon: ({ color }) => (
             <CustomBottomTabNavigator
               iconName='list-outline'
-              title='Pedidos'
               color={color}
-              notifications="0"
+              notifications={0}
             />
           )
         }}

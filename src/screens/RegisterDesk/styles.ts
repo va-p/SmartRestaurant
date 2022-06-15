@@ -16,14 +16,7 @@ export const Title = styled.Text`
   `};
 `;
 
-export const Divider = styled.View`
-  width: 100%;
-  height: 1px;
-  margin: 12px 0;
-  background-color: ${({ theme }) => theme.COLORS.SHAPE};
-`;
-
 export const Form = styled.View`
-  height: 30%;
+  height: 35%;
   padding: 12px 24px;
 `;

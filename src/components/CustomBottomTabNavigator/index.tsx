@@ -2,38 +2,29 @@ import React from 'react';
 import {
   Container,
   Icon,
-  TextContainer,
-  Title,
   Notification,
   Quantity
 } from './styles';
 
 type Props = {
   iconName: string;
-  title: string;
   color: string;
-  notifications?: string | undefined;
+  notifications?: number | undefined;
 }
 
-export function CustomBottomTabNavigator({ iconName, title, color, notifications }: Props) {
-  const noNotifications = notifications === '0';
+export function CustomBottomTabNavigator({ iconName, color, notifications }: Props) {
+  const noNotifications = notifications === 0;
+  // Se notifications === 0, então noNotifications é true, se não, noNotifications é false
 
   return (
     <Container>
-      <Icon name={iconName} />
-
-      <TextContainer>
-        <Title color={color}>{title}</Title>
-
-        {
-          notifications && (
-            <Notification noNotifications={noNotifications}>
-              <Quantity noNotifications={noNotifications}>{notifications}</Quantity>
-            </Notification>
-          )
-        }
-      </TextContainer>
-
+      {
+        noNotifications ?
+          <Icon color={color} name={iconName} /> :
+          <Notification noNotifications={noNotifications}>
+            <Quantity noNotifications={noNotifications}>{notifications}</Quantity>
+          </Notification>
+      }
     </Container>
   );
 }

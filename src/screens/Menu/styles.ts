@@ -5,12 +5,12 @@ import { RFValue } from 'react-native-responsive-fontsize';
 export const Container = styled.View`
 `;
 
-export const MenuHeader = styled.View`
+export const MenuSubHeader = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding-bottom: 22px;
-  margin: 25px 24px 0;
+  padding-bottom: 20px;
+  margin: 10px 0px 0;
   border-bottom-width: 1px;
   border-color: ${({ theme }) => theme.COLORS.SHAPE};
 `;

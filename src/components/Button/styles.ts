@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 import { RFValue } from 'react-native-responsive-fontsize';
 import { RectButton } from 'react-native-gesture-handler';
@@ -6,7 +6,7 @@ import { RectButton } from 'react-native-gesture-handler';
 export type TypeProps = 'primary' | 'secondary';
 
 type ContainerProps = {
-  type?: TypeProps;
+  type: TypeProps;
 }
 
 export const Container = styled(RectButton) <ContainerProps>`
@@ -22,10 +22,11 @@ export const Container = styled(RectButton) <ContainerProps>`
 `;
 
 export const Title = styled.Text`
-  flex: 1;
-  text-align: center;
   font-size: ${RFValue(16)}px;
-  color: ${({ theme }) => theme.COLORS.TITLE};
+  ${({ theme }) => css`
+    font-family: ${theme.FONTS.TEXT};
+    color: ${theme.COLORS.TITLE};
+  `};
 `;
 
 export const Load = styled.ActivityIndicator.attrs(({ theme }) => ({

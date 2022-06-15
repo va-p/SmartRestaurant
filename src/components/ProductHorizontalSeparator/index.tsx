@@ -5,8 +5,6 @@ import {
 
 export function ProductHorizontalSeparator() {
   return (
-    <Separator>
-
-    </Separator>
+    <Separator />
   );
 }

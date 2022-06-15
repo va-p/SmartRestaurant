@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Alert, FlatList } from 'react-native';
-import {
-  Container
-} from './styles';
+import { Container } from './styles';
 
-import { Desk, DeskProps } from '@components/Desk';
+import { useFocusEffect } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+
+import { DeskListItem, DeskProps } from '@components/DeskListItem';
 import { ModalView } from '@components/ModalView';
 import { Header } from '@components/Header';
 import { Load } from '@components/Load';
 
 import { Menu } from '@screens/Menu';
 
+import { selectUserTenantId } from '@slices/userSlice';
+
 import api from '@api/api';
 
-export interface DataListProps extends DeskProps {
+type DataListProps = DeskProps & {
   id: string;
 }
 
@@ -22,11 +25,16 @@ export function Home() {
   const [deskSelected, setDeskSelected] = useState<DeskProps>({} as DeskProps);
   const [openDeskModal, setOpenDeskModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const tenantId = useSelector(selectUserTenantId);
 
   async function fetchDesks() {
     setLoading(true);
     try {
-      const { data } = await api.get('desk');
+      const { data } = await api.get('desk', {
+        params: {
+          tenant_id: tenantId
+        }
+      });
       if (!data) {
       } else {
         setDesks(data);
@@ -48,9 +56,11 @@ export function Home() {
     setOpenDeskModal(false);
   };
 
-  useEffect(() => {
-    fetchDesks();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchDesks();
+    }, [])
+  );
 
   if (loading) {
     return <Load />
@@ -58,16 +68,13 @@ export function Home() {
 
   return (
     <Container>
-      <Header
-        type='secondary'
-        title='Mesas'
-      />
+      <Header type='secondary' title='Mesas' />
 
       <FlatList
         data={desks}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <Desk
+          <DeskListItem
             data={item}
             onPress={() => handleDeskSelect(item)}
           />
@@ -83,7 +90,8 @@ export function Home() {
       <ModalView
         visible={openDeskModal}
         closeModal={handleCloseDeskModal}
-        title='Mesa'
+        title='Pedido Mesa'
+        selectedIdentification={deskSelected.number}
       >
         <Menu />
       </ModalView>

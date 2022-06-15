@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components/native';
 import { TextInput } from 'react-native';
+import styled, { css } from 'styled-components/native';
 
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -9,11 +9,13 @@ type Props = {
   type: TypeProps;
 }
 
-export const Label = styled.Text`
-  padding-bottom: 5px;
-  ${({ theme }) => css`
-    font-family: ${theme.FONTS.TEXT};
-    color: ${theme.COLORS.SECONDARY_900};
+export const Label = styled.Text <Props>`
+  font-size: ${RFValue(14)}px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  ${({ theme, type }) => css`
+    font-family: ${theme.FONTS.TITLE};
+    color: ${type === 'primary' ? theme.COLORS.TITLE : theme.COLORS.SECONDARY_900};
   `};
 `;
 
@@ -22,9 +24,9 @@ export const Container = styled(TextInput).attrs<Props>(({ theme, type }) => ({
 })) <Props>`
   width: 100%;
   height: 56px;
+  font-size: ${RFValue(14)}px;
   padding: 7px 0;
   padding-left: 20px;
-  font-size: ${RFValue(14)}px;
   background-color: transparent;
   border-radius: 12px;
   ${({ theme, type }) => css`

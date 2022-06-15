@@ -18,12 +18,12 @@ export const Container = styled(LinearGradient).attrs(({ theme }) => ({
   width: 100%;
   flex-direction: row;
   align-items: center;
-  justify-content: ${({ type }) => type === 'primary' ? 'space-between' : 'center'};
+  justify-content: center;
   padding: ${getStatusBarHeight() + 30}px 20px 24px;
 `;
 
 export const BackButton = styled(BorderlessButton)`
-  left: 40px;
+  padding-right: 2%;
 `;
 
 export const IconBackButton = styled(Ionicons)`
@@ -37,9 +37,4 @@ export const Title = styled.Text`
     font-family: ${theme.FONTS.TITLE};
     color: ${theme.COLORS.TITLE};
   `};
-`;
-
-export const Icon = styled(Ionicons)`
-  font-size: ${RFValue(18)}px;
-  color: ${({ theme }) => theme.COLORS.TITLE};
 `;

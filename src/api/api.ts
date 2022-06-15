@@ -12,8 +12,8 @@ api.interceptors.request.use(async config => {
   try {
     const jsonUserAuthToken = await AsyncStorage.getItem(COLLECTION_TOKENS);
     if (jsonUserAuthToken) {
-      const loggedInUserToken = JSON.parse(jsonUserAuthToken);
-      config.headers.Authorization = `Bearer ${loggedInUserToken}`;
+      const loggedInUserAuthToken = JSON.parse(jsonUserAuthToken);
+      config.headers.Authorization = `Bearer ${loggedInUserAuthToken}`;
     }
   } catch (error) {
     console.error(error);

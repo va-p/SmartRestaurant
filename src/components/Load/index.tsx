@@ -4,9 +4,7 @@ import { Container, Indicator } from './styles';
 export function Load() {
   return (
     <Container>
-      <Indicator
-        size='large'
-      />
+      <Indicator size='large' />
     </Container>
   );
 }

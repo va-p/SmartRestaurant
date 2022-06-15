@@ -1,8 +1,8 @@
-import styled, { css } from 'styled-components/native';
 import { Animated } from 'react-native';
+import styled, { css } from 'styled-components/native';
 
-import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { RectButton } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 
 export const Container = styled.View`

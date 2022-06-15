@@ -5,7 +5,6 @@ import {
 
 export function ListDivider() {
   return (
-    <Container>
-    </Container>
+    <Container />
   );
 }

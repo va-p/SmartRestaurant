@@ -3,12 +3,12 @@ import type { RootState } from '../store'
 
 // Define a type for the slice state
 interface UserState {
-  userId: number | null;
+  userId: string | null;
   userName: string | null;
   userLastName: string | null;
   userEmail: string | null;
   userPhone: string | null;
-  userType: string | null;
+  userRole: string | null;
   userProfileImage: string | null;
   userTenantId: number | null;
 };
@@ -20,7 +20,7 @@ const initialState: UserState = {
   userLastName: null,
   userEmail: null,
   userPhone: null,
-  userType: null,
+  userRole: null,
   userProfileImage: null,
   userTenantId: null
 };
@@ -46,8 +46,8 @@ export const userSlice = createSlice({
     setUserPhone: (state, action: PayloadAction<UserState['userPhone']>) => {
       state.userPhone = action.payload;
     },
-    setUserType: (state, action: PayloadAction<UserState['userType']>) => {
-      state.userType = action.payload;
+    setUserRole: (state, action: PayloadAction<UserState['userRole']>) => {
+      state.userRole = action.payload;
     },
     setUserProfileImage: (state, action: PayloadAction<UserState['userProfileImage']>) => {
       state.userProfileImage = action.payload;
@@ -65,7 +65,7 @@ export const {
   setUserLastName,
   setUserEmail,
   setUserPhone,
-  setUserType,
+  setUserRole,
   setUserProfileImage,
   setUserTenantId
 } = userSlice.actions;
@@ -76,7 +76,7 @@ export const selectUserName = (state: RootState) => state.user.userName;
 export const selectUserLastName = (state: RootState) => state.user.userLastName;
 export const selectUserEmail = (state: RootState) => state.user.userEmail;
 export const selectUserPhone = (state: RootState) => state.user.userPhone;
-export const selectUserType = (state: RootState) => state.user.userType;
+export const selectUserRole = (state: RootState) => state.user.userRole;
 export const selectUserImage = (state: RootState) => state.user.userProfileImage;
 export const selectUserTenantId = (state: RootState) => state.user.userTenantId;
 

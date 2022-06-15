@@ -16,7 +16,7 @@ export const Backgroud = styled(LinearGradient).attrs(({ theme }) => ({
   flex: 1;
 `;
 
-export const Content = styled.ScrollView.attrs({
+export const ContentScroll = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
     paddingBottom: getBottomSpace() + 48
