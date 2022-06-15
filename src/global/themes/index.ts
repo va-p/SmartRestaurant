@@ -20,6 +20,7 @@ export default {
     ALERT_50: '#F3EFE5',
 
     SHAPE: '#DCDCDC',
+    SHAPE_800: '#EFEFEF',
     TITLE: '#FFF',
 
     OVERLAY: 'rgba(0, 0, 0, 0.7)',
